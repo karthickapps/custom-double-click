@@ -1,0 +1,73 @@
+<!doctype html>
+<html ng-app="customDoubleClick">
+  <head>
+    <title>Double click handler</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+    <script src="customDoubleClick.js"></script>
+  </head>
+  <body>
+    
+    <div ng-controller="CustomDoubleClickCtrl">
+        <h2>Custom Double Click Using Controller</h2>
+        <button ng-click="doubleClickHandler()">click me</button>
+        <img ng-if="image.alt === 'Double clicked'" ng-src="{{image.state}}" alt="image.alt" style="margin-left:20px">
+        <br/>
+        <h2>Custom Double Click Using directive</h2>
+        <button state="image" double-click>click me</button>
+        <br/>
+        <br/>
+        <h2> Code for Custom Double Click Using Controller</h2>
+        <code>
+            <pre>
+                <p style="background-color:#f2f2f2;color:#c7254E">
+                    app.controller('CustomDoubleClickCtrl', function($scope) {
+                        var clickCount = 0;
+                        $scope.doubleClickHandler = function(){
+                            clickCount++;
+                    
+                            if(clickCount === 2){
+                                $scope.image = {
+                                    state : "images/thumbUp.png",
+                                    alt : "Double clicked"
+                                };
+                            }else{
+                                $scope.image = {
+                                    alt : null
+                                };
+                            }
+                            setTimeout(function(){
+                                clickCount = 0;
+                            }, 250);
+                        };
+                    });
+                </p>
+            </pre>
+        </code>
+        <br/>
+        <h2>Code for Custom Double Click Using directive</h2>
+        <code>
+            <pre>
+                <p style="background-color:#f2f2f2;color:#c7254E">
+                    app.directive("doubleClick", function(){
+                        return {
+                            restrict: 'A',
+                            link: function(scope, element, attrs) {
+                                var counter = 0;
+                                element.bind('click', function(){
+                                    counter++;
+                                    if(counter == 2){
+                                        alert('Doulbe clicked');
+                                    }
+                                    setTimeout(function(){
+                                        counter = 0;
+                                    },250);
+                                });
+                            }
+                        };
+                    });
+                </p>
+            </pre>
+        </code>
+    </div>
+  </body>
+</html>
